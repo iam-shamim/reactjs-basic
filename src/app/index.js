@@ -5,23 +5,55 @@ import { Home } from './components/Home';
 
 
 class App extends React.Component{
+    constructor() {
+        super();
+        this.state={
+            homeLink:"Home",
+            homeMounted:true
+        }
+    }
+    onChangeLinkName(newName){
+        this.setState({
+            homeLink:newName
+        });
+    }
+    onGreet(){
+        alert('Hello');
+    }
+    onChangeMounted(){
+        this.setState({homeMounted : !this.state.homeMounted})
+    }
     render(){
         var user={
             name:"Shamim",
             hobbies:["Sports","Reading"]
         }
+        let homeComp="";
+        if(this.state.homeMounted){
+            homeComp=(<Home
+                name={"shamim"}
+                initialAge={19}
+                user={user}
+                greet={this.onGreet}
+                initialHome={this.state.homeLink}
+                homeChange={this.onChangeLinkName.bind(this)}
+            />);
+        }
         return(
             <div className="container">
                 <div className="row">
                     <div className="col-xs-10 col-xs-offset-1">
-                        <Header/>
+                        <Header homeLink={this.state.homeLink}/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-xs-10 col-xs-offset-1">
-                        <Home name={"shamim"} age={19} user={user}>
-                            <p>This is paragraph</p>
-                        </Home>
+                        {homeComp}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-10 col-xs-offset-1">
+                        <button onClick={this.onChangeMounted.bind(this)} >(Un) Mount Home Component</button>
                     </div>
                 </div>
             </div>
